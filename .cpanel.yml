@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/charterc/crafting.karakuchi.xyz/
+    - /bin/cp -a src/. $DEPLOYPATH
