@@ -1,0 +1,444 @@
+<html>
+  <head>
+  <title>ESO Crafting Calculator v1.55</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="icon"
+        type="image/webp"
+        href="favicon.webp">
+  
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+  <script src="js/html2canvas.js"></script>
+  <script src="js/jquery.plugin.html2canvas.js"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T8RC7B4DJB"></script>
+ <script src="js/analytics.js"></script>
+   <script src="js/runes.js?v=1.55"></script>
+   <script src="js/templates.js?v=1.55"></script>
+  <script src="js/crafting.js?v=1.55"></script>
+ 
+  <script>
+  //https://jsfiddle.net/vigneshncc/ncv56vwf/
+   
+       $(document).ready(function(){
+
+          getTemplatesSelectHTML(templates);
+          getLevelSelectHTML(levelArray);
+          getQualitySelect();
+          $('#img-btn').on('click', function() {
+              $('#download-image').html();
+              $('#image-div').html("<center><img src='images/loading.gif' alt='Loading' /><br>Loading...</center>");
+
+              for (idx = 0; idx < MaxItems; idx++) {
+                var matInput = document.getElementById("mats"+idx).value.trim();
+                if(matInput == ""){
+                    $("#row"+idx).hide();
+                }
+
+              }
+            html2canvas($("#capture")[0], {
+                background :'#FFFFFF',
+              onrendered: function(canvas) {
+                //document.getElementById('image-div').appendChild(canvas);
+                        
+                        //https://stackoverflow.com/questions/31656689/how-to-save-img-to-users-local-computer-using-html2canvas
+                          var downloadLink = document.createElement('a');
+                          // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+                          downloadLink.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+                          downloadLink.download = 'CraftingList.jpg';
+                          downloadLink.innerHTML = '<button type="button" class="btn btn-primary">Download</button>';
+                          
+                          
+                          $('#download-image').html(downloadLink);
+                  $('#image-div').html(canvas);
+                  $("tr").show();
+              },
+            });
+          });
+          
+          $('#shopping-list-btn').on('click', function() {
+              $('#shopping-list-div').html("<center><img src='images/loading.gif' alt='Loading' /><br>Loading...</center>");
+              /*
+                  totalMats
+                  totalStyleMats
+                  totalTraitMats
+                  totalImpMats
+              */
+              var listHtml="";
+              
+              if($('#totalMats').val() != ""){
+                // https://stackoverflow.com/questions/5999792/new-line-in-textarea-to-be-converted-to-br
+                  listHtml+="[Raw Materials]:</br>"+$('#totalMats').val().replace(/\r\n|\r|\n/g,"<br />")+"</br>";
+              }
+              
+              if($('#totalStyleMats').val() != ""){
+                // https://stackoverflow.com/questions/5999792/new-line-in-textarea-to-be-converted-to-br
+                  listHtml+="[Style Materials]:</br>"+$('#totalStyleMats').val().replace(/\r\n|\r|\n/g,"<br />")+"</br>";
+              }
+              
+              if($('#totalTraitMats').val() != ""){
+                // https://stackoverflow.com/questions/5999792/new-line-in-textarea-to-be-converted-to-br
+                  listHtml+="[Trait Materials]:</br>"+$('#totalTraitMats').val().replace(/\r\n|\r|\n/g,"<br />")+"</br>";
+              }
+              
+              if($('#totalImpMats').val() != ""){
+                // https://stackoverflow.com/questions/5999792/new-line-in-textarea-to-be-converted-to-br
+                  listHtml+="[Improvement Materials]:</br>"+$('#totalImpMats').val().replace(/\r\n|\r|\n/g,"<br />")+"</br>";
+              }
+              
+              if($('#totalRunes').val() != ""){
+                // https://stackoverflow.com/questions/5999792/new-line-in-textarea-to-be-converted-to-br
+                  listHtml+="[Runes]:</br>"+$('#totalRunes').val().replace(/\r\n|\r|\n/g,"<br />")+"</br>";
+              }
+      
+              if(listHtml!=""){
+                    $('#shopping-list-div').html(listHtml);
+              }else{
+                  $('#shopping-list-div').html("Nothing selected.");
+              }
+              
+            
+          });
+      });
+    
+    
+  </script>
+  
+  </head>
+  <body onload="populateAllItems()">
+  
+  
+      <div class="container-xl" id="main">
+          <div class="row">
+              <div class="col-md-12">
+                  <script>
+                  <!--
+                      if (showUnavailable) {
+                        document.writeln("<p>Note that items in red are not known by the crafter and so cannot be made.  This form will not prevent you from selecting them, though.</p>");
+                      }
+                  -->
+                  </script>
+                  <h1>ESO Crafting Calculator v1.55</h1>
+                  <p><strong>I didn't make this calculator, I just updated the sets, added support for enchantments, added Qty field & made it pretty. All credit for the core logic goes to the orignal creator 'msamraz' </strong><a href="http://msa-mraz.com/crafting/craftchart.html">http://msa-mraz.com/crafting/craftchart.html</a></p>
+                  <p>Qty is limted to 10 per row. Rows with a Qty > 1 will be marked with light blue color.</p>
+                  <p>
+                  Updated 29/07/2021.
+                  </p>
+                  <p>
+                    <table class="table">
+                      <tr>
+                        <td>
+                          <strong>Beginner templates:</strong> 
+                          <select name="template" id="templateSelect" class="form-select form-select-sm" onchange="applyTemplate(this,templates)">
+                            <option value="">-- Select One --</option>
+                          </select>
+
+                        </td>
+                        <td>
+                          <strong>Level:</strong> 
+                          <select name="templateLevel" id="templateLevelSelect" class="form-select form-select-sm" onchange="applyTemplateLevel(this)">
+                            
+                          </select>
+                        </td>
+                        <td>
+                          <strong>Improvement:</strong> 
+                          <select name="template" id="templateQualitySelect" class="form-select form-select-sm" onchange="applyTemplateQuality(this)">
+                            
+                          </select>
+                        </td>
+                      </tr>
+                    </table>
+                   
+                    
+                  </p>
+              </div>
+  
+          </div>
+          <div id="capture">
+            <form action="" id="craftForm">
+          <div class="row">
+              <div class="col-md-12">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                          <th>Qty</th>
+                          <th>Type</th>
+                          <th>Item</th>
+                          <th>Level</th>
+                          <th>Material (calculated)</th>
+                          <th>Style</th>
+                          <th>Trait</th>
+                          <th>Improvement</th>
+                          <th>Set</th>
+                          </tr>
+                      </thead>
+                       <tbody>
+                      <tr id="row0">
+                          <td><input class="form-control form-control-sm qty" type="text" value="1" size="1" onchange="qtyChanged(0)" id="qty0"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon0" onchange="itemTypeChanged(0)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType0" onchange="itemChanged(0)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level0" onchange="populateMats(0)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats0"/></td>
+                          <td><select class="form-select form-select-sm" id="style0" onchange="styleChanged(0)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait0" onchange="traitChanged(0)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement0" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set0" onchange="setChanged(0)"></select></td>
+                      </tr>
+                      <tr id="row1">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(1)" id="qty1"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon1" onchange="itemTypeChanged(1)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType1" onchange="itemChanged(1)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level1" onchange="populateMats(1)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats1"/></td>
+                          <td><select class="form-select form-select-sm" id="style1" onchange="styleChanged(1)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait1" onchange="traitChanged(1)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement1" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set1" onchange="setChanged(1)"></select></td>
+                      </tr>
+                      <tr id="row2">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(2)" id="qty2"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon2" onchange="itemTypeChanged(2)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType2" onchange="itemChanged(2)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level2" onchange="populateMats(2)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats2"/></td>
+                          <td><select class="form-select form-select-sm" id="style2" onchange="styleChanged(2)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait2" onchange="traitChanged(2)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement2" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set2" onchange="setChanged(2)"></select></td>
+                      </tr>
+                      <tr id="row3">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(3)" id="qty3"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon3" onchange="itemTypeChanged(3)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType3" onchange="itemChanged(3)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level3" onchange="populateMats(3)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats3"/></td>
+                          <td><select class="form-select form-select-sm" id="style3" onchange="styleChanged(3)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait3" onchange="traitChanged(3)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement3" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set3" onchange="setChanged(3)"></select></td>
+                      </tr>
+                      <tr id="row4">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(4)" id="qty4"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon4" onchange="itemTypeChanged(4)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType4" onchange="itemChanged(4)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level4" onchange="populateMats(4)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats4"/></td>
+                          <td><select class="form-select form-select-sm" id="style4" onchange="styleChanged(4)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait4" onchange="traitChanged(4)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement4" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set4" onchange="setChanged(4)"></select></td>
+                      </tr>
+                      <tr id="row5">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(5)" id="qty5"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon5" onchange="itemTypeChanged(5)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType5" onchange="itemChanged(5)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level5" onchange="populateMats(5)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats5"/></td>
+                          <td><select class="form-select form-select-sm" id="style5" onchange="styleChanged(5)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait5" onchange="traitChanged(5)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement5" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set5" onchange="setChanged(5)"></select></td>
+                      </tr>
+                      <tr id="row6">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(6)" id="qty6"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon6" onchange="itemTypeChanged(6)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType6" onchange="itemChanged(6)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level6" onchange="populateMats(6)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats6"/></td>
+                          <td><select class="form-select form-select-sm" id="style6" onchange="styleChanged(6)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait6" onchange="traitChanged(6)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement6" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set6" onchange="setChanged(6)"></select></td>
+                      </tr>
+                      <tr id="row7">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(7)" id="qty7"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon7" onchange="itemTypeChanged(7)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType7" onchange="itemChanged(7)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level7" onchange="populateMats(7)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats7"/></td>
+                          <td><select class="form-select form-select-sm" id="style7" onchange="styleChanged(7)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait7" onchange="traitChanged(7)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement7" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set7" onchange="setChanged(7)"></select></td>
+                      </tr>
+                      <tr id="row8">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(8)" id="qty8"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon8" onchange="itemTypeChanged(8)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType8" onchange="itemChanged(8)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level8" onchange="populateMats(8)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats8"/></td>
+                          <td><select class="form-select form-select-sm" id="style8" onchange="styleChanged(8)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait8" onchange="traitChanged(8)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement8" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set8" onchange="setChanged(8)"></select></td>
+                      </tr>
+                      <tr id="row9">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(9)" id="qty9"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon9" onchange="itemTypeChanged(9)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType9" onchange="itemChanged(9)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level9" onchange="populateMats(9)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats9"/></td>
+                          <td><select class="form-select form-select-sm" id="style9" onchange="styleChanged(9)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait9" onchange="traitChanged(9)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement9" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set9" onchange="setChanged(9)"></select></td>
+                      </tr>
+                      <tr id="row10">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(10)" id="qty10"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon10" onchange="itemTypeChanged(10)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType10" onchange="itemChanged(10)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level10" onchange="populateMats(10)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats10"/></td>
+                          <td><select class="form-select form-select-sm" id="style10" onchange="styleChanged(10)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait10" onchange="traitChanged(10)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement10" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set10" onchange="setChanged(10)"></select></td>
+                      </tr>
+                      <tr id="row11">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(10)" id="qty11"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon11" onchange="itemTypeChanged(11)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType11" onchange="itemChanged(11)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level11" onchange="populateMats(11)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats11"/></td>
+                          <td><select class="form-select form-select-sm" id="style11" onchange="styleChanged(11)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait11" onchange="traitChanged(11)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement11" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set11" onchange="setChanged(11)"></select></td>
+                      </tr>
+                      <tr id="row12">
+                        <td><input class="form-control form-control-sm" type="text" value="1" size="1" onchange="qtyChanged(12)" id="qty12"/></td>
+                          <td><select class="form-select form-select-sm" id="armorweapon12" onchange="itemTypeChanged(12)"></select></td>
+                          <td><select class="form-select form-select-sm" id="itemType12" onchange="itemChanged(12)"></select></td>
+                          <td><select class="form-select form-select-sm" id="level12" onchange="populateMats(12)"></select></td>
+                          <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats12"/></td>
+                          <td><select class="form-select form-select-sm" id="style12" onchange="styleChanged(12)"></select></td>
+                          <td><select class="form-select form-select-sm" id="trait12" onchange="traitChanged(12)"></select></td>
+                          <td><select class="form-select form-select-sm" id="improvement12" onchange="calculateTotalMaterials()"></select></td>
+                          <td><select class="form-select form-select-sm" id="set12" onchange="setChanged(12)"></select></td>
+                      </tr>
+                      
+                       </tbody>
+                  </table>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th>Total materials</th>
+                              <th>Total style materials</th>
+                              <th>Total trait materials</th>
+                              <th>Total improvement mats</th>
+                              <th>Total runes</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                          <td>
+                          <textarea id="totalMats" rows="12" cols="25" class="form-control" style="min-width: 100%" disabled>
+                          </textarea>
+                          </td>
+                          <td>
+                          <textarea id="totalStyleMats" rows="12" cols="25" class="form-control" style="min-width: 100%" disabled>
+                          </textarea>
+                          </td>
+                          <td>
+                          <textarea id="totalTraitMats" rows="12" cols="25" class="form-control" style="min-width: 100%" disabled>
+                          </textarea>
+                          </td>
+                          <td>
+                          <textarea id="totalImpMats" rows="12" cols="25" class="form-control" style="min-width: 100%" disabled>
+                          </textarea>
+                          </td>
+                          <td>
+                            <textarea id="totalRunes" rows="12" cols="25" class="form-control" style="min-width: 100%" disabled>
+                            </textarea>
+                            </td>
+                      </tr>
+                      </tbody>
+                  </table>
+                </div>
+          </div>
+        </form>
+               </div> <!-- END of capture div -->
+  
+              <div class="row" >
+                  <div class="col-md-12">
+                      <!-- Button trigger image modal -->
+                      <button id="img-btn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#imageModal">
+                        Make Image
+                      </button>
+                      
+                       <!-- Button trigger shopping modal -->
+                      <button id="shopping-list-btn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#shoppingModal">
+                        Make Shopping List
+                      </button>
+                  </div>
+              </div>
+      </div>
+  
+   <!-- <button id="img-btn">Make Image</button> -->
+  
+  
+  
+  <!-- Image Modal -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" style="width:auto;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="imageModalLabel">Image for copy</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" >
+          <div class="contaner-fluid">
+              <div id="image-div" class="row" >
+  
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+           <div id="download-image"></div>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Shopping Modal -->
+  <div class="modal fade" id="shoppingModal" tabindex="-1" aria-labelledby="shoppingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" style="width:auto;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="shoppingModalLabel">Shopping List</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" >
+          <div class="contaner">
+              <div class="row">
+                  <div class="col-md-1">
+                  </div>
+                  <div class="col-md-11">
+                      <div id="shopping-list-div" class="row" >
+      
+                      </div>
+                  </div>
+             </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  </body>
+  </html>
+  
