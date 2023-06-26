@@ -2,11 +2,17 @@
 ESO Crafting Calculator 
 A rework of http://msa-mraz.com/crafting/craftchart.html ESO crafting Calculator. All credit for the core logic and orignal UI goes to the orignal creator 'msamraz'. This Project is just an enhancement. I would like to give credit to where it is due. 
 
+Summary of main improvements (v1.57 26/06/2023):
+- Added the new craftable sets for the Necrom 
+    - Seeker Synthesis
+    - Shattered Fate
+    - Telvanni Efficiency
+
 Summary of main improvements (v1.56 06/06/2022):
-- added the new craftable sets for the High Isle Chapter
--- Druid's Braid
--- Order's Wrath
--- Serpent's Disdain
+- Added the new craftable sets for the High Isle Chapter
+    - Druid's Braid
+    - Order's Wrath
+    - Serpent's Disdain
 
 
 Summary of main improvements (v1.55 22/08/2021):
