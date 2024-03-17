@@ -2,20 +2,34 @@
 ESO Crafting Calculator 
 A rework of http://msa-mraz.com/crafting/craftchart.html ESO crafting Calculator. All credit for the core logic and orignal UI goes to the orignal creator 'msamraz'. This Project is just an enhancement. I would like to give credit to where it is due. 
 
-Summary of main improvements (v1.57 26/06/2023):
+
+**Summary of main improvements (v1.58 17/03/2024):**
+
+- Added the new craftable sets for DLC Firesong & Deadlands
+  - Chimera's Rebuke
+  - Claw of the Forest Wraith
+  - Deadlands Demolisher
+  - Old Growth Brewer
+
+
+- Added full names for:
+  - Way of the Arena
+  - Armor of the Seducer
+
+**Summary of main improvements (v1.57 26/06/2023):**
 - Added the new craftable sets for the Necrom 
     - Seeker Synthesis
     - Shattered Fate
     - Telvanni Efficiency
 
-Summary of main improvements (v1.56 06/06/2022):
+**Summary of main improvements (v1.56 06/06/2022):**
 - Added the new craftable sets for the High Isle Chapter
     - Druid's Braid
     - Order's Wrath
     - Serpent's Disdain
 
 
-Summary of main improvements (v1.55 22/08/2021):
+**Summary of main improvements (v1.55 22/08/2021):**
 - Updated to include Blackwood sets
 - Added option for 'Any' style
 - Updated UI to be responsive and mobile friendly (Bootstrap v5)
