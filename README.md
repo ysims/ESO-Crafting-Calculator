@@ -3,6 +3,14 @@ ESO Crafting Calculator
 A rework of http://msa-mraz.com/crafting/craftchart.html ESO crafting Calculator. All credit for the core logic and orignal UI goes to the orignal creator 'msamraz'. This Project is just an enhancement. I would like to give credit to where it is due. 
 
 
+**Summary of main improvements (v1.59 19/07/2024):**
+
+- Added the new craftable sets for DLC Gold Road
+  - Highland Sentinel
+  - Tharriker's Strike
+  - Threads of War
+
+
 **Summary of main improvements (v1.58 17/03/2024):**
 
 - Added the new craftable sets for DLC Firesong & Deadlands
