@@ -626,6 +626,12 @@ function populateAllItems()
 {
   var idx;
   for (idx = 0; idx < MaxItems; idx++) {
+    populateAllItemsForRow(idx);
+  }
+}
+
+function populateAllItemsForRow(idx)
+{
     populateArmorWeaponSelect(idx);
     populateLevels(idx,levelArray);
     populateItemType(idx);
@@ -633,7 +639,6 @@ function populateAllItems()
     populateTraits(idx, true)
     populateImprovements(idx)
     populateSets(idx);
-  }
 }
 
 function itemTypeChanged(itemIdx)

@@ -1,6 +1,6 @@
 <html>
   <head>
-  <title>ESO Crafting Calculator v1.59</title>
+  <title>ESO Crafting Calculator v1.60</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="icon"
         type="image/webp"
@@ -16,14 +16,31 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T8RC7B4DJB"></script>
  <script src="js/analytics.js"></script>
-   <script src="js/runes.js?v=1.57"></script>
-   <script src="js/templates.js?v=1.57"></script>
-  <script src="js/crafting.js?v=1.59"></script>
+   <script src="js/runes.js?v=1.60"></script>
+   <script src="js/templates.js?v=1.60"></script>
+  <script src="js/crafting.js?v=1.60"></script>
  
   <script>
   //https://jsfiddle.net/vigneshncc/ncv56vwf/
    
        $(document).ready(function(){
+          // 'Add Row' button event handler
+          $('#add-row-btn').on('click', function() {
+                  var rowCount = $('#craftTable tbody tr').length;
+                  var newRow = `<tr id="row${rowCount}">
+                      <td><input class="form-control form-control-sm qty" type="text" value="1" size="1" onchange="qtyChanged(${rowCount})" id="qty${rowCount}"/></td>
+                      <td><select class="form-select form-select-sm" id="armorweapon${rowCount}" onchange="itemTypeChanged(${rowCount})"></select></td>
+                      <td><select class="form-select form-select-sm" id="itemType${rowCount}" onchange="itemChanged(${rowCount})"></select></td>
+                      <td><select class="form-select form-select-sm" id="level${rowCount}" onchange="populateMats(${rowCount})"></select></td>
+                      <td><input class="form-control form-control-sm" type="text" readonly size="20" id="mats${rowCount}"/></td>
+                      <td><select class="form-select form-select-sm" id="style${rowCount}" onchange="styleChanged(${rowCount})"></select></td>
+                      <td><select class="form-select form-select-sm" id="trait${rowCount}" onchange="traitChanged(${rowCount})"></select></td>
+                      <td><select class="form-select form-select-sm" id="improvement${rowCount}" onchange="calculateTotalMaterials()"></select></td>
+                      <td><select class="form-select form-select-sm" id="set${rowCount}" onchange="setChanged(${rowCount})"></select></td>
+                  </tr>`;
+                  $('#craftTable tbody').append(newRow);
+                  populateAllItemsForRow(rowCount);
+          });
 
           getTemplatesSelectHTML(templates);
           getLevelSelectHTML(levelArray);
@@ -117,11 +134,11 @@
                         document.writeln("<p>Note that items in red are not known by the crafter and so cannot be made.  This form will not prevent you from selecting them, though.</p>");
                       }
                   </script>
-                  <h1>ESO Crafting Calculator v1.59</h1>
-                  <p><strong>I didn't make this calculator, I just updated the sets, added support for enchantments, added Qty field & made it pretty. All credit for the core logic goes to the orignal creator 'msamraz' </strong><a href="http://msa-mraz.com/crafting/craftchart.html">http://msa-mraz.com/crafting/craftchart.html</a></p>
+                  <h1>ESO Crafting Calculator v1.60</h1>
+                  <p><strong>I didn't make this calculator, I just updated the sets, added support for enchantments, added Qty field & made it pretty. All credit for the core logic goes to the orignal creator 'msamraz'</strong></p>
                   <p>Qty is limted to 10 per row. Rows with a Qty > 1 will be marked with light blue color.</p>
                   <p>
-                  Updated 19/07/2024
+                  Updated 06/03/2025
                   </p>
                   <p>
                     <table class="table">
@@ -157,7 +174,7 @@
             <form action="" id="craftForm">
           <div class="row">
               <div class="col-md-12">
-                  <table class="table">
+                  <table class="table" id="craftTable">
                       <thead>
                           <tr>
                           <th>Qty</th>
@@ -315,9 +332,11 @@
                           <td><select class="form-select form-select-sm" id="improvement12" onchange="calculateTotalMaterials()"></select></td>
                           <td><select class="form-select form-select-sm" id="set12" onchange="setChanged(12)"></select></td>
                       </tr>
-                      
+                     
                        </tbody>
-                  </table>
+                  </table>                      
+                  <p><button id="add-row-btn" type="button" class="btn btn-secondary">Add Row</button></p>
+                </tr>
               </div>
           </div>
           <div class="row">

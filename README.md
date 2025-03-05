@@ -1,7 +1,14 @@
 # ESO-Crafting-Calculator
 ESO Crafting Calculator 
-A rework of http://msa-mraz.com/crafting/craftchart.html ESO crafting Calculator. All credit for the core logic and orignal UI goes to the orignal creator 'msamraz'. This Project is just an enhancement. I would like to give credit to where it is due. 
+A rework of msa-mraz ESO crafting Calculator. All credit for the core logic and orignal UI goes to the orignal creator 'msamraz'. This Project is just an enhancement. I would like to give credit to where it is due. 
 
+**Summary of main improvements (v1.60 06/03/2025):**
+
+- Added a new 'Add Row' button
+  - Table got a unique id.
+  - New functions to support new row button
+- Added new Beginner template 'DPS - Magicka (Major Expedition)'
+- Removed URL to msamraz calculator as domain is no longer valid.
 
 **Summary of main improvements (v1.59 19/07/2024):**
 

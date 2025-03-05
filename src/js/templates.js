@@ -182,6 +182,91 @@ var templates = [
        ]
     },
     {
+      "Name": "DPS - Magicka (Major Expedition)",
+      "Items":
+      [
+         
+        {
+          "Type": "Armor",
+          "Item": "Medium Chest",
+          "Trait": "Training",
+          "Set": "Adept Rider"
+        },
+        {
+          "Type": "Armor",
+          "Item": "Medium Gloves",
+          "Trait": "Training",
+          "Set": "Adept Rider"
+        },
+          {
+          "Type": "Armor",
+          "Item": "Medium Boots",
+          "Trait": "Training",
+          "Set": "Adept Rider"
+        },
+        {
+          "Type": "Armor",
+          "Item": "Medium Legs",
+          "Trait": "Training",
+          "Set": "Adept Rider"
+        },
+        {
+          "Type": "Armor",
+          "Item": "Medium Waist",
+          "Trait": "Training",
+          "Set": "Adept Rider"
+        },
+        {
+          "Type": "Armor",
+          "Item": "Light Shoulders",
+          "Trait": "Training",
+          "Set": "Order's Wrath"
+        },
+        {
+          "Type": "Armor",
+          "Item": "Light Helmet",
+          "Trait": "Training",
+            "Set": "Order's Wrath"
+        },
+        {
+          "Type": "Jewelry",
+          "Item": "Ring",
+          "Trait": "Arcane",
+            "Set": "Order's Wrath"
+        },
+        {
+          "Type": "Jewelry",
+          "Item": "Ring",
+          "Trait": "Arcane",
+            "Set": "Order's Wrath"
+        },
+        {
+          "Type": "Jewelry",
+          "Item": "Necklace",
+          "Trait": "Arcane",
+            "Set": "Order's Wrath"
+        },
+        {
+          "Type": "Weapon",
+          "Item": "Dagger",
+          "Trait": "Training",
+          "Set": "Seducer"
+        },
+        {
+          "Type": "Weapon",
+          "Item": "Dagger",
+          "Trait": "Training",
+          "Set": "Seducer"
+        },
+        {
+          "Type": "Weapon",
+          "Item": "Inferno Staff",
+          "Trait": "Training",
+          "Set": "Seducer"
+        }
+      ]
+    },
+    {
         "Name": "DPS - Stamina ",
         "Items":[
            
