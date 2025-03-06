@@ -1,5 +1,3 @@
-
-var MaxItems = 13;
 var showUnavailable = false;
 if (window.location.href.indexOf("?su=1") > 0)
   showUnavailable = true;
@@ -625,6 +623,7 @@ stylePartsKnownHash["Yokundan"] = new StylePartsKnown("Yokundan", true, [], fals
 function populateAllItems()
 {
   var idx;
+  var MaxItems = $('#craftTable tbody tr').length;
   for (idx = 0; idx < MaxItems; idx++) {
     populateAllItemsForRow(idx);
   }
@@ -1108,6 +1107,7 @@ function calculateTotalMaterials()
   var traitMats = new Object();
   var improvementMats = new Object();
   var runeMats= new Object();
+  var MaxItems = $('#craftTable tbody tr').length;
 
   for (idx = 0; idx < MaxItems; idx++) {
     var typeValue =  getSelectedType(idx);

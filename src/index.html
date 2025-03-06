@@ -18,7 +18,7 @@
  <script src="js/analytics.js"></script>
    <script src="js/runes.js?v=1.60"></script>
    <script src="js/templates.js?v=1.60"></script>
-  <script src="js/crafting.js?v=1.60"></script>
+  <script src="js/crafting.js?v=1.601"></script>
  
   <script>
   //https://jsfiddle.net/vigneshncc/ncv56vwf/
@@ -40,6 +40,7 @@
                   </tr>`;
                   $('#craftTable tbody').append(newRow);
                   populateAllItemsForRow(rowCount);
+                  calculateTotalMaterials();
           });
 
           getTemplatesSelectHTML(templates);
@@ -48,7 +49,7 @@
           $('#img-btn').on('click', function() {
               $('#download-image').html();
               $('#image-div').html("<center><img src='images/loading.gif' alt='Loading' /><br>Loading...</center>");
-
+              var MaxItems = $('#craftTable tbody tr').length;
               for (idx = 0; idx < MaxItems; idx++) {
                 var matInput = document.getElementById("mats"+idx).value.trim();
                 if(matInput == ""){
