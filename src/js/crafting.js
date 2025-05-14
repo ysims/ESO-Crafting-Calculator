@@ -134,6 +134,7 @@ var setArray = [
   "Hist Whisperer",
   "Hunding's Rage",
   "Innate Axiom",
+  "Iron Flask",
   "Kagrenac's Hope",
   "Kvatch Gladiator",
   "Law of Julianos",
@@ -181,7 +182,8 @@ var setArray = [
   "Vastarie's Tutelage",
   "Way of the Arena",
   "Whitestrake's Retribution",
-  "Willow's Path" 
+  "Willow's Path",
+  "Wretched Vitality"
   ];
 
 var styleArray = [];

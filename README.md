@@ -2,6 +2,15 @@
 ESO Crafting Calculator 
 A rework of msa-mraz ESO crafting Calculator. All credit for the core logic and orignal UI goes to the orignal creator 'msamraz'. This Project is just an enhancement. I would like to give credit to where it is due. 
 
+
+**Summary of main improvements (v1.61 15/05/2025):**
+
+- Added the new craftable sets for DLC Deadlands
+  - Iron Flask
+  - Wretched Vitality
+  
+
+
 **Summary of main improvements (v1.60 06/03/2025):**
 
 - Added a new 'Add Row' button
