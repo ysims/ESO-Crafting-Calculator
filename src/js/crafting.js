@@ -172,6 +172,7 @@ var setArray = [
   "Telvanni Efficiency",
   "Tharriker's Strike",
   "Threads of War",
+  "Tide-Born Wildstalker",
   "Torug's Pact",
   "Trial by Fire",
   "Twice-born Star",
