@@ -1166,9 +1166,6 @@ function calculateTotalMaterials()
           var impIdx = 1;
           for (impIdx = 1; impIdx <= improvementSelect.selectedIndex; impIdx++) {
             name = improvementMat[impIdx];
-            if (isJewelry)
-              count = impIdx;
-            else
               count = improvementLevels[impIdx].materialCount;
             if (improvementMats[name] == null)
               improvementMats[name] = count*qty;
